@@ -3,20 +3,18 @@ html, body {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  position: fixed;
   font-family: "Reddit Mono", monospace;
   background: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
-    overscroll-behavior: none;
-
+  overscroll-behavior: none;
 }
 
 /* Top text */
 
 .top-section {
-  margin-top: 160px;   /* move entire block lower */
+  margin-top: 100px;   /* move entire block lower */
   text-align: center;
   padding: 0 20px;
 }
@@ -37,16 +35,14 @@ html, body {
 
 .carousel-wrapper {
   position: absolute;
-  bottom: -45%;
   left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, 0);
   width: 90vw;
-  height: 90vw;      /* EXACTLY same as width */
-  max-width: 1000px; /* optional */
-  margin-top: 40px;
-  aspect-ratio: 1 / 1;  /* guarantees perfect square */
+  aspect-ratio: 1 / 1;
   touch-action: none;
-    transition: opacity 0.5s ease;
+  transition: opacity 0.5s ease;
+    margin-top: 500px;
 
 }
 
@@ -147,7 +143,7 @@ button {
 
 .confirm-section {
   position: fixed;
-  bottom: 225px;
+  bottom: 25px;
   left: 50%;
   transform: translateX(-50%);
   width: 50%;
@@ -182,7 +178,7 @@ button {
 .prompt {
   font-size: 14px;
   font-weight: 400;
-  margin-bottom: 25px;
+  margin-top: 25px;
 }
 
 .fade-out {
