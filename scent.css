@@ -1,0 +1,258 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  font-family: "Reddit Mono", monospace;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+    overscroll-behavior: none;
+
+}
+
+/* Top text */
+
+.top-section {
+  margin-top: 160px;   /* move entire block lower */
+  text-align: center;
+  padding: 0 20px;
+}
+
+#emotion-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+#emotion-definition,
+#emotion-interpretation {
+  font-size: 12px;
+  opacity: 0.7;
+  margin: 5px 0;
+}
+
+/* Carousel */
+
+.carousel-wrapper {
+  position: absolute;
+  bottom: -45%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90vw;
+  height: 90vw;      /* EXACTLY same as width */
+  max-width: 1000px; /* optional */
+  margin-top: 40px;
+  aspect-ratio: 1 / 1;  /* guarantees perfect square */
+  touch-action: none;
+    transition: opacity 0.5s ease;
+
+}
+
+.emotion {
+  position: absolute;
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+  border: 1px solid black;  /* thicker */
+  background: #ffffff;      /* NOT white */
+  color: black
+}
+.emotion:hover {
+  position: absolute;
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+  border: 1px solid black;  /* thicker */
+  background: black;      /* NOT white */
+  color: white
+}
+.carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: rotate(0deg);
+}
+
+.selector-indicator {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 50px;
+  background: black;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+/* Emotion buttons */
+
+
+.emotion span {
+  display: inline-block;
+}
+
+.emotion.active {
+  transform: scale(1.15);
+}
+
+.emotion:not(.active) {
+  opacity: 0.6;
+}
+
+/* Reflection */
+
+.reflection-section {
+  margin-top: 30px;
+  width: 90%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+textarea {
+  resize: none;
+  height: 100px;
+  font-family: inherit;
+  background: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  border: 1px black solid;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px;
+  font-family: inherit;
+  background: black;
+  color: white;
+  border: none;
+}
+
+.hidden {
+  display: none;
+}
+.carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;   /* FORCE exact center */
+  will-change: transform;      /* improves GPU stability */
+}
+.carousel-wrapper {
+  aspect-ratio: 1 / 1;
+}
+
+.confirm-section {
+  position: fixed;
+  bottom: 225px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  max-width: 350px;
+  text-align: center;
+  z-index: 20;
+    transition: opacity 0.5s ease;
+
+}
+
+.confirm-section button {
+  width: 100%;
+  padding: 14px;
+  font-family: inherit;
+  background: none;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  border: 1px solid black;
+  background: white;
+}
+.confirm-section button:hover {
+  width: 100%;
+  padding: 14px;
+  font-family: inherit;
+  background: none;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  border: 1px solid black;
+  background: black;
+}
+
+.prompt {
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 25px;
+}
+
+.fade-out {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.fade-in {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.emotion-overlay {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+  transition: background 1s ease;
+  z-index: -1;
+}
+
+/* Remove default appearance */
+#intensity {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: black;
+  outline: none;
+  margin-top: 10px;
+}
+
+/* Track (Chrome / Safari) */
+#intensity::-webkit-slider-runnable-track {
+  height: 2px;
+  background: black;
+}
+
+/* Thumb (Chrome / Safari) */
+#intensity::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid black;
+  cursor: pointer;
+  margin-top: -8px; /* centers thumb on 2px track */
+  transition: transform 0.2s ease;
+}
+
+/* Thumb hover effect */
+#intensity::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Firefox track */
+#intensity::-moz-range-track {
+  height: 2px;
+  background: black;
+}
+
+/* Firefox thumb */
+#intensity::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid black;
+  cursor: pointer;
+}

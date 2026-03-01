@@ -1,0 +1,173 @@
+body {
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(255, 255, 255);
+  font-family: "Reddit Mono", monospace; /* ← THIS WAS MISSING */
+}
+
+.container {
+  text-align: center;
+  width: 100%;
+}
+
+.logo {
+  font-size: 3rem;
+  color: rgb(0, 0, 0);
+  letter-spacing: 4px;
+  margin-bottom: 40px;
+}
+
+button {
+  font-family: inherit; /* cleaner than repeating it */
+  -webkit-appearance: none; /* removes iOS default styling */
+  appearance: none;
+}
+
+.begin-btn {
+  background: transparent;
+  color: rgb(0, 0, 0);
+  border: 1px solid rgb(0, 0, 0);
+  padding: 14px 36px;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.begin-btn:hover {
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  transition: 0.2s ease;
+}
+
+.screen {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.slide {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  position: absolute;
+  width: 80%;
+}
+
+.slide.active-slide {
+  opacity: 1;
+  position: relative;
+}
+
+.next-btn {
+  position: absolute;
+  bottom: 60px;
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 12px 28px;
+  font-family: inherit;
+}
+
+.screen {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  padding: 40px;
+}
+
+.screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.slide {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  width: 80%;
+}
+
+.slide.active-slide {
+  opacity: 1;
+  position: relative;
+}
+
+.release-btn {
+  margin-top: 40px;
+  background: transparent;
+  border: 1px solid rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+  padding: 14px 36px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.release-btn:hover {
+  background-color: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  transition: 0.2s ease;
+}
+
+.scent-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(
+    circle,
+    rgba(255,255,255,0.08) 0%,
+    rgba(255,255,255,0.04) 30%,
+    rgba(0,0,0,0.9) 75%
+  );
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.scent-overlay.active {
+  animation: bloom 2.8s ease-out forwards;
+}
+
+@keyframes bloom {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    width: 250vh;
+    height: 250vh;
+    opacity: 1;
+  }
+}
+
+.screen.fade-out {
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}

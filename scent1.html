@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>m3m0ry</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="scent.css">
+</head>
+
+<body>
+
+  <!-- Top Emotion Info -->
+<div class="top-section">
+  <h1 class="prompt">
+    what does this scent make you feel?
+  </h1>
+
+  <h2 id="emotion-title"></h2>
+  <p id="emotion-definition"></p>
+  <p id="emotion-interpretation"></p>
+</div>
+
+  <!-- Carousel -->
+  <div class="carousel-wrapper">
+    <div class="carousel" id="carousel"></div>
+  </div>
+
+  <!-- Confirm Button (Hidden Initially) -->
+<div class="confirm-section hidden" id="confirmSection">
+  <button id="confirmEmotion">confirm emotion</button>
+  <button id="lockIn" class="hidden">lock in</button>
+</div>
+
+  <!-- Reflection Section (Also Hidden Initially) -->
+  <div id="reflectionSection" class="reflection-section hidden">
+
+    <label for="intensity">intensity</label>
+    <input type="range" id="intensity" min="1" max="10">
+
+    <textarea id="reflection" placeholder="was a memory triggered?"></textarea>
+
+
+  </div>
+
+  <script src="scent.js"></script>
+<div class="emotion-overlay"></div>
+</body>
+</html>

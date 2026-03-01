@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>m3m0ry</title>
+
+    <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="homescreen.css" />
+</head>
+<body>
+
+<div class="screen landing active">
+  <h1 class="logo">m3m0ry</h1>
+  <button class="begin-btn" onclick="startCalibration()">
+    begin emotional calibration
+  </button>
+</div>
+
+<div class="screen onboarding" onclick="nextSlide()">
+  <div class="slide active-slide">
+    <p>
+      scent has a strange way of bringing things back
+    </p>
+  </div>
+
+  <div class="slide">
+    <p>
+      we will release one scent at a time
+    </p>
+  </div>
+
+  <div class="slide">
+    <p>
+      notice what you feel.
+    </p>
+    <p>
+      there's no right answer.
+    </p>
+  </div>
+
+  <div class="slide final-slide">
+    <p>
+      please plug in your scent device
+    </p>
+
+    <button class="release-btn" onclick="releaseScent(event)">
+      release scent 01
+    </button>
+  </div>
+</div>
+
+<div class="scent-overlay"></div>
+
+<script src="homescreen.js"></script>
+
+</body>
+</html>
