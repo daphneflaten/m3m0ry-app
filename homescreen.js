@@ -1,3 +1,7 @@
+window.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("page-visible");
+});
+
 let currentSlide = 0;
 let isAnimating = false;
 

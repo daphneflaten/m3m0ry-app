@@ -10,8 +10,10 @@
 
   <link rel="stylesheet" href="home.css">
 </head>
-<body>
-
+<body class="page-fade">
+  <div class="nav-bar">
+  <button id="homeBtn">main menu</button>
+</div>
   <div class="archive-header">
     <p>calibration archive</p>
   </div>
@@ -22,10 +24,26 @@
     <div class="folder-viewer">
       <div class="viewer-tab" id="viewerTab"></div>
       <div class="viewer-body" id="viewerBody"></div>
-      <button class="close-btn" id="closeViewer">close</button>
-    </div>
+<div class="viewer-actions">
+    <button class="forget-btn" id="forgetBtn">forget</button>
+  <button class="close-btn" id="closeViewer">close</button>
+</div>   
+</div>
   </div>
 
+  <div class="forget-warning" id="forgetWarning">
+  <div>
+    <p>
+      you can suppress it, but memories do not disappear. they resurface.
+    </p>
+    <div class="warning-actions">
+      <button id="confirmForget">suppress</button>
+      <button id="cancelForget">keep</button>
+    </div>
+  </div>
+</div>
+
   <script src="home.js"></script>
+  <div class="suppress-overlay" id="suppressOverlay"></div>
 </body>
 </html>

@@ -160,3 +160,14 @@ button {
 .final-slide p {
   margin-top: 60px; /* pushes text slightly lower */
 }
+
+/* Page fade in */
+
+.page-fade {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.page-visible {
+  opacity: 1;
+}

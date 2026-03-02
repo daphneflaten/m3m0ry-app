@@ -6,12 +6,10 @@
   <title>m3m0ry</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@400;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="scent.css">
 </head>
-
 <body>
 
   <div class="page" id="page">
@@ -27,28 +25,29 @@
       <div class="picker" id="picker"></div>
     </div>
 
+    <p class="emotion-definition" id="emotionDefinition"></p>
+
     <div class="confirm-section">
       <button id="confirmBtn" disabled>confirm emotion</button>
     </div>
 
-    <div class="reflection-section hidden" id="reflectionSection">
+    <div class="reflection-section" id="reflectionSection">
+      <p class="memory-prompt">describe what surfaced.</p>
+      <textarea id="reflectionInput" placeholder="type here..."></textarea>
 
-  <p class="memory-prompt">
-    describe what surfaced.
-  </p>
+      <label>intensity</label>
+      <input type="range" id="intensity" min="1" max="10">
 
-  <textarea id="reflectionInput" placeholder="type here..."></textarea>
-
-  <label class="intensity-label">intensity</label>
-  <input type="range" id="intensity" min="1" max="10">
-
-  <button id="lockInBtn">lock in</button>
-
-</div>
-
-<div class="emotion-overlay" id="emotionOverlay"></div>
+      <button id="lockInBtn">lock in</button>
+    </div>
 
   </div>
+
+  <!-- Diffusion intro overlay -->
+  <div class="diffusion-overlay" id="diffusionOverlay"></div>
+
+  <!-- Emotion bleed overlay -->
+  <div class="pixel-overlay" id="pixelOverlay"></div>
 
   <script src="scent.js"></script>
 </body>

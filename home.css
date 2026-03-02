@@ -8,10 +8,8 @@ html, body {
 
 .archive-header {
   text-align: center;
-  margin: 60px 0 40px 0;
+  margin: 30px 0 60px 0;
   font-size: 14px;
-  letter-spacing: 1px;
-  opacity: 0.6;
 }
 
 /* Drawer stack */
@@ -62,7 +60,6 @@ html, body {
   border-radius: 14px 14px 0 0;
   background: white;
   font-size: 12px;
-  letter-spacing: 1px;
   z-index: 3;
 }
 
@@ -102,6 +99,11 @@ html, body {
   border: 1px solid black;
   border-radius: 18px;
   padding: 40px 28px 28px 28px;
+
+  display: flex;              /* 👈 add */
+  flex-direction: column;     /* 👈 add */
+  align-items: center;        /* 👈 add */
+
   transform: translateY(30px);
   transition: transform 0.4s ease;
 }
@@ -112,21 +114,27 @@ html, body {
 
 .viewer-tab {
   position: absolute;
-  top: -24px;
-  left: 30px;
-  height: 40px;
+  top: -34px; /* slightly less than before */
+  height: 32px; /* slightly taller */
   padding: 0 22px;
   display: flex;
   align-items: center;
   border: 1px solid black;
-  border-bottom: none;
+  border-bottom: 2px solid white;
   border-radius: 14px 14px 0 0;
   background: white;
   font-size: 12px;
 }
 
-.close-btn {
-  margin-top: 30px;
+
+/* Forget button uses same style as close */
+
+.forget-btn {
+  margin-top: 14px;
+}
+
+.close-btn,
+.forget-btn {
   padding: 12px 26px;
   border: 1px solid black;
   background: white;
@@ -134,7 +142,126 @@ html, body {
   transition: background 0.2s ease, color 0.2s ease;
 }
 
-.close-btn:hover {
+.close-btn:hover,
+.forget-btn:hover {
   background: black;
   color: white;
+}
+
+
+/* Bottom Navigation */
+
+.nav-bar {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 520px;
+  display: flex;
+  justify-content: center;
+  z-index: 50;
+}
+
+#homeBtn {
+  background: white;
+  border: 1px solid black;
+  padding: 10px 22px;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+#homeBtn:hover {
+  background: black;
+  color: white;
+}
+
+/* Warning overlay */
+
+.forget-warning {
+  position: fixed;
+  inset: 0;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 100;
+}
+
+.forget-warning.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.forget-warning p {
+  max-width: 320px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.warning-actions {
+  margin-top: 30px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Forget popup buttons */
+
+.warning-actions button {
+  padding: 12px 26px;
+  border: 1px solid black;
+  background: white;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.warning-actions button:hover {
+  background: black;
+  color: white;
+}
+
+
+
+/* Pixel Suppress Overlay */
+
+.suppress-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+  display: none;
+}
+
+.suppress-overlay.active {
+  display: grid;
+}
+
+.archive-fade {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.archive-visible {
+  opacity: 1;
+}
+
+/* Archive page fade in */
+
+.page-fade {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.page-visible {
+  opacity: 1;
 }

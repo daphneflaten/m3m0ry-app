@@ -1,19 +1,23 @@
-/* Base */
-
 html, body {
   margin: 0;
   height: 100%;
   background: white;
   font-family: "Reddit Mono", monospace;
   overflow: hidden;
+}
+
+/* PAGE FADE */
+
+.page {
+  opacity: 0;
   transition: opacity 1s ease;
 }
 
-body.page-loaded {
+.page.visible {
   opacity: 1;
 }
 
-/* Top text */
+/* TOP TEXT */
 
 .top-text {
   text-align: center;
@@ -30,20 +34,17 @@ body.page-loaded {
   margin-top: 10px;
 }
 
-/* Picker */
+/* PICKER */
 
 .picker-container {
   position: relative;
   height: 320px;
-  width: 100%;
   margin-top: 60px;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-/* Center lock indicator */
 
 .center-indicator {
   position: absolute;
@@ -54,8 +55,6 @@ body.page-loaded {
   pointer-events: none;
   z-index: 3;
 }
-
-/* Fade mask */
 
 .picker-mask {
   position: absolute;
@@ -71,12 +70,11 @@ body.page-loaded {
   z-index: 2;
 }
 
-/* Scroll area */
-
 .picker {
   height: 100%;
   width: 100%;
   overflow-y: scroll;
+  overflow-x: hidden;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
   text-align: center;
@@ -85,16 +83,6 @@ body.page-loaded {
 .picker::-webkit-scrollbar {
   display: none;
 }
-
-.picker {
-  overflow-y: scroll;
-  overflow-x: hidden;   /* 👈 add this */
-  scroll-snap-type: y mandatory;
-  -webkit-overflow-scrolling: touch;
-  text-align: center;
-}
-
-/* Items */
 
 .picker-item {
   height: 60px;
@@ -110,60 +98,46 @@ body.page-loaded {
   transform: scale(1.2);
 }
 
-/* Confirm button */
+/* DEFINITION */
+
+.emotion-definition {
+  margin-top: 20px;
+  font-size: 12px;
+  opacity: 0.6;
+  text-align: center;
+  padding: 0 40px;
+  min-height: 40px;
+  transition: opacity 0.3s ease;
+}
+
+/* BUTTON */
 
 .confirm-section {
   position: fixed;
-bottom: 50px;
+  bottom: 50px;
   width: 100%;
   text-align: center;
 }
 
-#confirmBtn {
+button {
   padding: 14px 36px;
   border: 1px solid black;
   background: white;
   font-family: inherit;
-  font-size: 14px;
-  transition: background 0.2s ease, color 0.2s ease, opacity 0.3s ease;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
-#confirmBtn:disabled {
-  opacity: 0.4;
-}
-
-#confirmBtn:not(:disabled):hover {
+button:hover {
   background: black;
   color: white;
 }
 
-.page {
-  opacity: 0;
-  transition: opacity 1s ease;
+button:disabled {
+  opacity: 0.4;
 }
 
-.page.visible {
-  opacity: 1;
-}
+/* REFLECTION */
 
-/* Hide utility */
-.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Overlay gradient bleed */
-.emotion-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: transparent;
-  opacity: 0;                 /* start invisible */
-  transition: opacity 1.5s ease;  /* fade duration */
-  z-index: 1;
-}
-
-/* Reflection screen */
 .reflection-section {
   position: fixed;
   inset: 0;
@@ -173,7 +147,6 @@ bottom: 50px;
   align-items: center;
   justify-content: center;
   padding: 40px;
-  text-align: center;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.8s ease;
@@ -185,10 +158,6 @@ bottom: 50px;
   pointer-events: all;
 }
 
-.memory-prompt {
-  margin-bottom: 20px;
-}
-
 textarea {
   width: 80%;
   max-width: 320px;
@@ -196,33 +165,23 @@ textarea {
   resize: none;
   border: 1px solid black;
   padding: 10px;
-  font-family: inherit;
   margin-bottom: 30px;
 }
 
-#intensity {
-  width: 80%;
-  max-width: 320px;
-  margin-bottom: 30px;
+/* PIXEL OVERLAY */
+
+.pixel-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
 }
 
-#lockInBtn {
-  padding: 14px 36px;
-  border: 1px solid black;
-  background: white;
-  font-family: inherit;
-  transition: background 0.2s ease, color 0.2s ease;
-}
+/* DIFFUSION OVERLAY */
 
-#lockInBtn:hover {
-  background: black;
-  color: white;
-}
-
-/* Fadeable elements */
-
-.top-text,
-.picker-container,
-.confirm-section {
-  transition: opacity 0.8s ease;
+.diffusion-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
 }
