@@ -1,156 +1,119 @@
+// Fade in page wrapper
+window.addEventListener("load", () => {
+  document.getElementById("page").classList.add("visible");
+});
+
 document.addEventListener("DOMContentLoaded", async () => {
 
   // Load JSON
   const response = await fetch("data.json");
   const data = await response.json();
 
-  const carousel = document.getElementById("carousel");
-  const carouselWrapper = document.querySelector(".carousel-wrapper");
-  const overlay = document.querySelector(".emotion-overlay");
-
-  const emotionTitle = document.getElementById("emotion-title");
-  const emotionDefinition = document.getElementById("emotion-definition");
-  const emotionInterpretation = document.getElementById("emotion-interpretation");
-
-  const confirmSection = document.getElementById("confirmSection");
-  const confirmBtn = document.getElementById("confirmEmotion");
-  const lockInBtn = document.getElementById("lockIn");
-  const reflectionSection = document.getElementById("reflectionSection");
-
   const emotions = Object.keys(data.emotions);
 
-  const radius = 650; // KEEP — dramatic bottom-peek look
-  const angleStep = 360 / emotions.length;
+  const picker = document.getElementById("picker");
+  const confirmBtn = document.getElementById("confirmBtn");
+  const overlay = document.getElementById("emotionOverlay");
+  const reflectionSection = document.getElementById("reflectionSection");
+  const pickerContainer = document.querySelector(".picker-container");
+  const topText = document.querySelector(".top-text");
+  const confirmSection = document.querySelector(".confirm-section");
 
-  let rotation = 0;
-  let isDragging = false;
-  let startX = 0;
+  const itemHeight = 60;
   let selectedEmotion = null;
 
-  // Build carousel
-  emotions.forEach((emotion, index) => {
+  /* =========================
+     BUILD INFINITE PICKER
+  ========================== */
 
-    const btn = document.createElement("button");
-    btn.classList.add("emotion");
+  const looped = [...emotions, ...emotions, ...emotions];
 
-    const label = document.createElement("span");
-    label.innerText = emotion;
-    btn.appendChild(label);
-
-    const angle = index * angleStep;
-    const radians = angle * (Math.PI / 180);
-
-    const x = radius * Math.cos(radians);
-    const y = radius * Math.sin(radians);
-
-    // 125px button → half ≈ 62 → use whole number
-    btn.style.left = `calc(50% + ${x}px - 63px)`;
-    btn.style.top  = `calc(50% + ${y}px - 63px)`;
-
-    btn.addEventListener("click", (e) => {
-      selectEmotion(emotion, e);
-    });
-
-    carousel.appendChild(btn);
+  looped.forEach(emotion => {
+    const div = document.createElement("div");
+    div.classList.add("picker-item");
+    div.textContent = emotion;
+    picker.appendChild(div);
   });
 
-  const buttons = document.querySelectorAll(".emotion");
+  const total = emotions.length;
+  const items = document.querySelectorAll(".picker-item");
 
-  function selectEmotion(emotion, e) {
-    selectedEmotion = emotion;
+  // Start centered in middle copy
+  picker.scrollTop = itemHeight * total;
 
-    buttons.forEach(btn => btn.classList.remove("active"));
-    e.currentTarget.classList.add("active");
+  function updateActive() {
 
-    emotionTitle.innerText = emotion;
-    emotionDefinition.innerText = data.emotions[emotion].definition;
-    emotionInterpretation.innerText = "";
+    const center = picker.scrollTop + picker.offsetHeight / 2;
+    const index = Math.round(center / itemHeight) - 1;
 
-    confirmSection.classList.remove("hidden");
-    reflectionSection.classList.add("hidden");
+    items.forEach(item => item.classList.remove("active"));
+
+    if (items[index]) {
+      items[index].classList.add("active");
+      selectedEmotion = items[index].textContent;
+      confirmBtn.disabled = false;
+    }
+
+    // Infinite reset illusion
+    if (picker.scrollTop <= itemHeight * 5) {
+      picker.scrollTop += itemHeight * total;
+    }
+
+    if (picker.scrollTop >= itemHeight * total * 2.5) {
+      picker.scrollTop -= itemHeight * total;
+    }
   }
 
-  // Rotate carousel
-  carousel.addEventListener("pointerdown", (e) => {
-    e.preventDefault();
-    isDragging = true;
-    startX = e.clientX;
-  });
+  picker.addEventListener("scroll", updateActive);
 
-  window.addEventListener("pointermove", (e) => {
-    if (!isDragging) return;
+  updateActive();
 
-    const delta = e.clientX - startX;
-    rotation += delta * 0.3;
-    startX = e.clientX;
+  /* =========================
+     CONFIRM TRANSITION
+  ========================== */
 
-    carousel.style.transform = `rotate(${rotation}deg)`;
-
-    // Keep labels upright
-    buttons.forEach(btn => {
-      btn.querySelector("span").style.transform = `rotate(${-rotation}deg)`;
-    });
-  });
-
-  window.addEventListener("pointerup", () => {
-    isDragging = false;
-  });
-
-  // CONFIRM EMOTION → BLEED COLOR
   confirmBtn.addEventListener("click", () => {
 
     if (!selectedEmotion) return;
 
-    const emotionData = data.emotions[selectedEmotion];
-    const scent = data.scents["scent1"];
-    const color = emotionData.color;
+    const emotionColor = data.emotions[selectedEmotion].color;
 
-    emotionInterpretation.innerText =
-      emotionData.meaning +
-      " notes detected: " + scent.notes.join(", ") + ".";
+    /* 1️⃣ Set gradient background instantly */
+    overlay.style.background = `
+      radial-gradient(
+        circle at center,
+        rgba(255,255,255,0) 45%,
+        ${emotionColor} 120%
+      )
+    `;
 
-    // Fade carousel out
-    carouselWrapper.classList.add("fade-out");
+    /* 2️⃣ Force reflow to trigger transition */
+    overlay.offsetHeight;
 
-    // BLEED EFFECT — rises from bottom / carousel area
-    overlay.style.background =
-      `radial-gradient(
-        circle at 50% 85%,
-        ${color} 0%,
-        ${color} 35%,
-        rgba(255,255,255,0.85) 70%,
-        rgba(255,255,255,1) 100%
-      )`;
+    /* 3️⃣ Fade gradient in */
+    overlay.style.opacity = "1";
 
-    // Swap buttons
-    confirmBtn.classList.add("hidden");
+    /* 4️⃣ Fade picker out */
+    pickerContainer.style.opacity = "0";
+    topText.style.opacity = "0";
+    confirmSection.style.opacity = "0";
 
+    pickerContainer.style.pointerEvents = "none";
+    confirmSection.style.pointerEvents = "none";
+
+    /* 5️⃣ After fade, reveal reflection */
     setTimeout(() => {
-      lockInBtn.classList.remove("hidden");
-    }, 500);
+      reflectionSection.classList.remove("hidden");
+      reflectionSection.classList.add("visible");
+    }, 800);
 
-    reflectionSection.classList.remove("hidden");
-  });
-
-  // LOCK IN
-  lockInBtn.addEventListener("click", () => {
-
-    if (!selectedEmotion) return;
-
-    const intensity = document.getElementById("intensity").value;
-    const reflection = document.getElementById("reflection").value;
-
-    console.log({
-      scent: "scent1",
-      emotion: selectedEmotion,
-      intensity,
-      reflection
-    });
-
-    // Later: transition to next scent + reset overlay
   });
 
 });
 
-document.getElementById("intensity").style.background =
-  `linear-gradient(to right, ${emotionColor} ${value*10}%, black ${value*10}%)`;
+pickerContainer.style.opacity = "0";
+
+setTimeout(() => {
+  topText.style.opacity = "0";
+  confirmSection.style.opacity = "0";
+}, 150);

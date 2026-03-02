@@ -1,133 +1,116 @@
+/* Base */
+
 body {
   height: 100vh;
   margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgb(255, 255, 255);
-  font-family: "Reddit Mono", monospace; /* ← THIS WAS MISSING */
+  background: #ffffff;
+  font-family: "Reddit Mono", monospace;
+  overflow: hidden;
 }
 
-.container {
-  text-align: center;
-  width: 100%;
-}
+/* Logo */
 
 .logo {
-  font-size: 3rem;
-  color: rgb(0, 0, 0);
-  letter-spacing: 4px;
+  width: 600px;
+  max-width: 80vw;
+  height: auto;
   margin-bottom: 40px;
 }
 
-button {
-  font-family: inherit; /* cleaner than repeating it */
-  -webkit-appearance: none; /* removes iOS default styling */
-  appearance: none;
-}
+/* Buttons */
 
-.begin-btn {
-  background: transparent;
-  color: rgb(0, 0, 0);
-  border: 1px solid rgb(0, 0, 0);
-  padding: 14px 36px;
-  border-radius: 0;
+button {
+  font-family: inherit;
+  -webkit-appearance: none;
+  appearance: none;
   cursor: pointer;
 }
 
-.begin-btn:hover {
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  transition: 0.2s ease;
+/* Begin Button */
+
+.begin-btn {
+  background: transparent;
+  color: black;
+  border: 1px solid black;
+  padding: 14px 36px;
+  transition: background 0.2s ease, color 0.2s ease;
 }
+
+.begin-btn:hover {
+  background: black;
+  color: white;
+}
+
+/* Screens */
 
 .screen {
   position: absolute;
-  height: 100vh;
-  width: 100vw;
+  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
-}
-
-.screen.active {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.slide {
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  position: absolute;
-  width: 80%;
-}
-
-.slide.active-slide {
-  opacity: 1;
-  position: relative;
-}
-
-.next-btn {
-  position: absolute;
-  bottom: 60px;
-  background: transparent;
-  border: 1px solid white;
-  color: white;
-  padding: 12px 28px;
-  font-family: inherit;
-}
-
-.screen {
-  position: absolute;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  pointer-events: none;
   padding: 40px;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
 }
 
 .screen.active {
   opacity: 1;
-  pointer-events: all;
+  pointer-events: auto;
 }
+
+/* Slides */
 
 .slide {
   position: absolute;
-  opacity: 0;
-  transition: opacity 0.6s ease;
   width: 80%;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .slide.active-slide {
   opacity: 1;
-  position: relative;
+  transform: translateY(0);
 }
+
+/* Release Button (Hidden Until Final Slide Active) */
 
 .release-btn {
   margin-top: 40px;
   background: transparent;
-  border: 1px solid rgb(0, 0, 0);
-  color: rgb(0, 0, 0);
+  border: 1px solid black;
+  color: black;
   padding: 14px 36px;
-  font-family: inherit;
-  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.final-slide.active-slide .release-btn {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition-delay: 0.6s; /* 👈 this is the key */
 }
 
 .release-btn:hover {
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  transition: 0.2s ease;
+  background: black;
+  color: white;
 }
+
+/* Fade Out Screen */
+
+.screen.fade-out {
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+/* Scent Bloom Overlay */
 
 .scent-overlay {
   position: fixed;
@@ -167,7 +150,13 @@ button {
   }
 }
 
-.screen.fade-out {
-  opacity: 0;
-  transition: opacity 1.5s ease;
+.final-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.final-slide p {
+  margin-top: 60px; /* pushes text slightly lower */
 }
