@@ -152,11 +152,88 @@
     }
   },
 
-  "scents": {
-    "scent1": {
-      "name": "first rain",
-      "type": "fresh",
-      "notes": ["ozone", "wet stone", "earth"]
-    }
+"seedArchive": [
+  {
+    "scentId": "scent1",
+    "emotion": "nostalgia",
+    "intensity": 7,
+    "reflection": "wet pavement outside my childhood house. summer evenings.",
+    "timestamp": 1712458800000
+  },
+  {
+    "scentId": "scent2",
+    "emotion": "comfort",
+    "intensity": 9,
+    "reflection": "laundry room warmth. towels just pulled from the dryer.",
+    "timestamp": 1715140800000
+  },
+  {
+    "scentId": "scent3",
+    "emotion": "anxiety",
+    "intensity": 6,
+    "reflection": "sterile hallway before an appointment. quiet but tense.",
+    "timestamp": 1717819200000
+  },
+  {
+    "scentId": "scent4",
+    "emotion": "joy",
+    "intensity": 8,
+    "reflection": "cut grass and sunscreen. end of school year.",
+    "timestamp": 1720497600000
+  },
+  {
+    "scentId": "scent5",
+    "emotion": "grief",
+    "intensity": 5,
+    "reflection": "old books in a closed room. dust suspended in light.",
+    "timestamp": 1723176000000
+  },
+  {
+    "scentId": "scent6",
+    "emotion": "hope",
+    "intensity": 6,
+    "reflection": "fresh air through an open window in early spring.",
+    "timestamp": 1725854400000
+  },
+  {
+    "scentId": "scent7",
+    "emotion": "homesickness",
+    "intensity": 8,
+    "reflection": "someone else's kitchen that almost smelled familiar.",
+    "timestamp": 1728532800000
+  },
+  {
+    "scentId": "scent8",
+    "emotion": "relief",
+    "intensity": 4,
+    "reflection": "rain after humidity. the air finally shifted.",
+    "timestamp": 1731211200000
+  },
+  {
+    "scentId": "scent9",
+    "emotion": "curiosity",
+    "intensity": 6,
+    "reflection": "metallic scent of a new device just opened.",
+    "timestamp": 1733889600000
+  },
+  {
+    "scentId": "scent10",
+    "emotion": "melancholy",
+    "intensity": 7,
+    "reflection": "late afternoon light and fading perfume.",
+    "timestamp": 1736568000000
   }
+],
+"scents": {
+  "scent1": { "name": "first rain" },
+  "scent2": { "name": "warm linen" },
+  "scent3": { "name": "sterile air" },
+  "scent4": { "name": "cut grass" },
+  "scent5": { "name": "dusty books" },
+  "scent6": { "name": "spring air" },
+  "scent7": { "name": "foreign kitchen" },
+  "scent8": { "name": "post rain" },
+  "scent9": { "name": "new device" },
+  "scent10": { "name": "fading perfume" }
+}
 }
