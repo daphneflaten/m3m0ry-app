@@ -11,12 +11,9 @@ function startScentBuffer() {
   const overlay = document.getElementById("diffusionOverlay");
   const page = document.getElementById("page");
 
-overlay.innerHTML = "";
-overlay.classList.add("active");
-
-// Start pure white
-overlay.style.background = "white";
-overlay.style.opacity = "1";
+  overlay.innerHTML = "";
+  overlay.style.background = "white";
+  overlay.style.opacity = "1";
 
   const fragmentCount = 8;
   const gridSize = 18;
@@ -41,7 +38,6 @@ overlay.style.opacity = "1";
     fragment.style.display = "grid";
     fragment.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
     fragment.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
-    fragment.style.pointerEvents = "none";
 
     fragment.style.left =
       Math.random() * (window.innerWidth - squareSize) + "px";
@@ -69,7 +65,8 @@ overlay.style.opacity = "1";
 
         cell.style.backgroundColor = hexToRGBA(baseColor, opacity);
         cell.style.opacity = "0";
-cell.style.transition = "opacity 0.35s ease";
+        cell.style.transition = "opacity 0.3s ease";
+
         fragment.appendChild(cell);
         cells.push({ cell, distance });
       }
@@ -84,7 +81,7 @@ cell.style.transition = "opacity 0.35s ease";
       cells.forEach((obj, i) => {
         setTimeout(() => {
           obj.cell.style.opacity = "1";
-        }, fIndex * 120 + i * 6);
+        }, fIndex * 70 + i * 4);
       });
     });
   }
@@ -94,43 +91,29 @@ cell.style.transition = "opacity 0.35s ease";
       cells.slice().reverse().forEach((obj, i) => {
         setTimeout(() => {
           obj.cell.style.opacity = "0";
-        }, fIndex * 120 + i * 6);
+        }, fIndex * 70 + i * 4);
       });
     });
   }
 
-  // breathing loop
-// slight white pause before diffusion
-setTimeout(() => {
-  inhale();
-}, 250);
+  setTimeout(() => inhale(), 200);
+  setTimeout(() => exhale(), 900);
+  setTimeout(() => inhale(), 1600);
+  setTimeout(() => exhale(), 2300);
 
-setTimeout(() => {
-  exhale();
-}, 900);
+  setTimeout(() => {
+    overlay.style.transition = "opacity 1s ease";
+    overlay.style.opacity = "0";
+  }, 3000);
 
-setTimeout(() => {
-  inhale();
-}, 1700);
-
-setTimeout(() => {
-  exhale();
-}, 2500);
-
-setTimeout(() => {
-  overlay.style.transition = "opacity 4s ease";
-  overlay.style.opacity = "0";
-}, 3300);
-
-// Hold white screen before UI appears
-setTimeout(() => {
-  page.classList.add("visible");
-}, 3900);
+  setTimeout(() => {
+    page.classList.add("visible");
+  }, 3600);
 }
 
 
 /* ===================================================== */
-/* ================= MAIN APP LOGIC ===================== */
+/* ================= MAIN APP =========================== */
 /* ===================================================== */
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -142,22 +125,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const picker = document.getElementById("picker");
   const confirmBtn = document.getElementById("confirmBtn");
-  const reflectionSection = document.getElementById("reflectionSection");
-  const lockInBtn = document.getElementById("lockInBtn");
   const definitionEl = document.getElementById("emotionDefinition");
+  const reflectionSection = document.getElementById("reflectionSection");
   const pixelOverlay = document.getElementById("pixelOverlay");
 
-  const topText = document.querySelector(".top-text");
-  const pickerContainer = document.querySelector(".picker-container");
+  const backBtn = document.getElementById("backBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const controls = document.querySelector(".reflection-controls");
 
-  const itemHeight = 60;
+  const memoryInput = document.getElementById("reflectionInput");
+
   let selectedEmotion = null;
-
-
+  let vividnessValue = 0;
+  let currentSlide = 0;
 
   /* ================= BUILD PICKER ================= */
 
   const looped = [...emotions, ...emotions, ...emotions];
+  const itemHeight = 60;
 
   looped.forEach(emotion => {
     const div = document.createElement("div");
@@ -182,7 +167,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       items[index].classList.add("active");
       selectedEmotion = items[index].textContent;
       confirmBtn.disabled = false;
-
       definitionEl.textContent =
         data.emotions[selectedEmotion].definition;
     }
@@ -198,20 +182,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateActive();
 
 
-
   /* ================= CONFIRM BLOBS ================= */
-
-  function hexToRGBA(hex, alpha) {
-    const r = parseInt(hex.substring(1,3), 16);
-    const g = parseInt(hex.substring(3,5), 16);
-    const b = parseInt(hex.substring(5,7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  }
 
   function renderPixelGradient(colorHex) {
 
     pixelOverlay.innerHTML = "";
-    pixelOverlay.classList.add("visible");
 
     const fragmentCount = 8;
     const gridSize = 18;
@@ -226,7 +201,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       fragment.style.display = "grid";
       fragment.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
       fragment.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
-      fragment.style.pointerEvents = "none";
 
       fragment.style.left =
         Math.random() * (window.innerWidth - squareSize) + "px";
@@ -252,7 +226,12 @@ document.addEventListener("DOMContentLoaded", async () => {
           opacity = Math.max(0, opacity);
           opacity = Math.round(opacity * 5) / 5;
 
-          cell.style.backgroundColor = hexToRGBA(colorHex, opacity);
+          cell.style.backgroundColor =
+            `rgba(${parseInt(colorHex.substr(1,2),16)},
+                  ${parseInt(colorHex.substr(3,2),16)},
+                  ${parseInt(colorHex.substr(5,2),16)},
+                  ${opacity})`;
+
           cell.style.opacity = "0";
           cell.style.transition = "opacity 0.25s ease";
 
@@ -263,16 +242,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       cells.sort((a, b) => a.distance - b.distance);
 
-      const fragmentDelay = s * 150;
-
       cells.forEach((obj, i) => {
         setTimeout(() => {
           obj.cell.style.opacity = "1";
-        }, fragmentDelay + i * 6);
+        }, s * 120 + i * 5);
       });
     }
   }
-
 
 
   /* ================= CONFIRM ================= */
@@ -283,40 +259,106 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const emotionColor = data.emotions[selectedEmotion].color;
 
-    pickerContainer.style.opacity = "0";
-    topText.style.opacity = "0";
+    document.querySelector(".picker-container").style.opacity = "0";
+    document.querySelector(".top-text").style.opacity = "0";
     confirmBtn.style.opacity = "0";
+    definitionEl.style.opacity = "0";
 
     renderPixelGradient(emotionColor);
 
     setTimeout(() => {
       reflectionSection.classList.add("visible");
-    }, 700);
+      showSlide(0);
+    }, 900);
   });
 
 
+  /* ================= SLIDES ================= */
 
-  /* ================= LOCK IN ================= */
+  const slides = document.querySelectorAll(".reflection-slide");
 
-  lockInBtn.addEventListener("click", () => {
+  function showSlide(index) {
 
-    if (!selectedEmotion) return;
+    slides.forEach((slide, i) => {
+      slide.classList.remove("active", "previous");
 
-    const entry = {
-      scentId: "scent1",
-      emotion: selectedEmotion,
-      intensity: document.getElementById("intensity").value,
-      reflection: document.getElementById("reflectionInput").value,
-      timestamp: Date.now()
-    };
+      if (i === index) slide.classList.add("active");
+      if (i < index) slide.classList.add("previous");
+    });
 
-    let archive =
-      JSON.parse(localStorage.getItem("m3m0ryArchive")) || [];
+    currentSlide = index;
 
-    archive.push(entry);
-    localStorage.setItem("m3m0ryArchive", JSON.stringify(archive));
+    if (currentSlide === 0) {
+      controls.classList.add("centered");
+      nextBtn.textContent = "next";
+    } else {
+      controls.classList.remove("centered");
+      nextBtn.textContent = "lock in";
+    }
+  }
 
-    window.location.href = "home.html";
+  backBtn.addEventListener("click", () => {
+    if (currentSlide > 0) showSlide(currentSlide - 1);
+  });
+
+  nextBtn.addEventListener("click", () => {
+
+    if (currentSlide === 0) {
+
+      showSlide(1);
+
+    } else {
+
+      const entry = {
+        scentId: "scent1",
+        emotion: selectedEmotion,
+        reflection: memoryInput.value,
+        vividness: vividnessValue,
+        timestamp: Date.now()
+      };
+
+      let archive =
+        JSON.parse(localStorage.getItem("m3m0ryArchive")) || [];
+
+      archive.push(entry);
+      localStorage.setItem("m3m0ryArchive", JSON.stringify(archive));
+
+const page = document.getElementById("page");
+
+// trigger fade out
+page.classList.add("exit");
+
+// wait for animation to finish
+setTimeout(() => {
+const page = document.getElementById("page");
+const pixelOverlay = document.getElementById("pixelOverlay");
+
+// fade page + blots
+page.classList.add("exit");
+pixelOverlay.style.opacity = "0";
+
+setTimeout(() => {
+  window.location.href = "home.html";
+}, 800);}, 800);    }
+  });
+
+  showSlide(0);
+
+
+  /* ================= VIVIDNESS ================= */
+
+  const vividBlocks = document.querySelectorAll(".vivid-block");
+
+  vividBlocks.forEach(block => {
+    block.addEventListener("click", () => {
+
+      vividnessValue = parseInt(block.dataset.value);
+
+      vividBlocks.forEach(b => {
+        const value = parseInt(b.dataset.value);
+        b.classList.toggle("active", value <= vividnessValue);
+      });
+    });
   });
 
 });

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  // Smooth page reveal
-document.body.classList.add("page-visible");
+
+  document.body.classList.add("page-visible");
 
   const drawer = document.getElementById("drawer");
 
@@ -16,7 +16,6 @@ document.body.classList.add("page-visible");
   const cancelForget = document.getElementById("cancelForget");
 
   const suppressOverlay = document.getElementById("suppressOverlay");
-
   const homeBtn = document.getElementById("homeBtn");
 
   let currentEntryIndex = null;
@@ -26,6 +25,15 @@ document.body.classList.add("page-visible");
   const response = await fetch("data.json");
   const data = await response.json();
 
+  function getContrastYIQ(hexcolor){
+    hexcolor = hexcolor.replace("#","");
+    const r = parseInt(hexcolor.substr(0,2),16);
+    const g = parseInt(hexcolor.substr(2,2),16);
+    const b = parseInt(hexcolor.substr(4,2),16);
+    const yiq = ((r*299)+(g*587)+(b*114))/1000;
+    return (yiq >= 128) ? 'black' : 'white';
+  }
+
   let archive = JSON.parse(localStorage.getItem("m3m0ryArchive"));
 
   if (!archive || archive.length === 0) {
@@ -33,7 +41,7 @@ document.body.classList.add("page-visible");
     localStorage.setItem("m3m0ryArchive", JSON.stringify(archive));
   }
 
-  /* -------- RENDER FUNCTION -------- */
+  /* -------- RENDER -------- */
 
   function renderArchive() {
 
@@ -60,6 +68,13 @@ document.body.classList.add("page-visible");
       tab.classList.add("folder-tab");
       tab.textContent = entry.emotion;
 
+      const emotionColor = data.emotions[entry.emotion]?.color;
+
+      if (emotionColor) {
+        tab.style.background = emotionColor;
+        tab.style.color = getContrastYIQ(emotionColor);
+      }
+
       const randomOffset = Math.floor(Math.random() * 80) - 40;
       tab.style.left = `${60 + randomOffset}px`;
 
@@ -76,10 +91,15 @@ document.body.classList.add("page-visible");
 
         viewerTab.textContent = entry.emotion;
 
+        if (emotionColor) {
+          viewerTab.style.background = emotionColor;
+          viewerTab.style.color = getContrastYIQ(emotionColor);
+        }
+
         viewerBody.innerHTML = `
           <h2>${entry.scentId}</h2>
           <p style="margin-top:20px;">
-            intensity ${entry.intensity}
+            intensity ${entry.intensity || entry.vividness || ""}
           </p>
           <p style="margin-top:20px;">
             ${entry.reflection || "no reflection recorded."}
@@ -117,8 +137,6 @@ document.body.classList.add("page-visible");
     forgetWarning.classList.remove("visible");
   });
 
-  /* -------- PIXEL SUPPRESS (SNAPPY + SMOOTH RETURN) -------- */
-
   confirmForget.addEventListener("click", () => {
 
     suppressOverlay.innerHTML = "";
@@ -152,37 +170,31 @@ document.body.classList.add("page-visible");
 
     setTimeout(() => {
 
-      // Remove from storage
       let storedArchive =
         JSON.parse(localStorage.getItem("m3m0ryArchive")) || [];
 
       storedArchive.splice(currentEntryIndex, 1);
       localStorage.setItem("m3m0ryArchive", JSON.stringify(storedArchive));
 
-      // Hide viewer + warning
       backdrop.classList.remove("visible");
       forgetWarning.classList.remove("visible");
 
-      // Fade drawer out
       drawer.style.transition = "opacity 0.4s ease";
       drawer.style.opacity = "0";
 
       setTimeout(() => {
 
-        // Re-render archive
         renderArchive();
-
-        // Fade drawer back in
         drawer.style.opacity = "1";
 
-        // Fade overlay away smoothly
-suppressOverlay.style.transition = "opacity 0.6s ease";
-suppressOverlay.style.opacity = "0";
+        suppressOverlay.style.transition = "opacity 0.6s ease";
+        suppressOverlay.style.opacity = "0";
 
-setTimeout(() => {
-  suppressOverlay.classList.remove("active");
-  suppressOverlay.style.display = "none";
-}, 600);
+        setTimeout(() => {
+          suppressOverlay.classList.remove("active");
+          suppressOverlay.style.display = "none";
+          suppressOverlay.style.opacity = "1";
+        }, 600);
 
       }, 400);
 
