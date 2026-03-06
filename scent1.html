@@ -1,87 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>m3m0ry</title>
-  <link rel="icon" type="image/png" href="favicon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@400;600&display=swap" rel="stylesheet">
+<title>m3m0ry</title>
 
-  <link rel="stylesheet" href="scent.css">
+<link rel="icon" type="image/png" href="favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="scent.css">
 </head>
+
 <body>
 
-  <div class="page" id="page">
+<div class="page" id="page">
 
-    <!-- TOP TEXT -->
-    <div class="top-text">
-      <p class="system-line">scent released</p>
-      <p class="instruction">select the emotion you feel</p>
-    </div>
+<!-- TOP TEXT -->
+<div class="top-text">
+<p class="system-line">scent released</p>
+<p class="instruction">select the emotion you feel</p>
+</div>
 
-    <!-- PICKER -->
-    <div class="picker-container">
-      <div class="center-indicator"></div>
-      <div class="picker-mask"></div>
-      <div class="picker" id="picker"></div>
-    </div>
+<!-- PICKER -->
+<div class="picker-container">
+<div class="center-indicator"></div>
+<div class="picker-mask"></div>
+<div class="picker" id="picker"></div>
+</div>
 
-    <!-- EMOTION DEFINITION -->
-    <p class="emotion-definition" id="emotionDefinition"></p>
+<!-- DEFINITION -->
+<p class="emotion-definition" id="emotionDefinition"></p>
 
-    <!-- CONFIRM BUTTON -->
-    <div class="confirm-section">
-      <button id="confirmBtn" disabled>confirm emotion</button>
-    </div>
+<!-- CONFIRM -->
+<div class="confirm-section">
+<button id="confirmBtn" disabled>confirm emotion</button>
+</div>
 
-    <!-- REFLECTION SECTION -->
-    <div class="reflection-section" id="reflectionSection">
+<!-- REFLECTION -->
+<div class="reflection-section" id="reflectionSection">
 
-      <!-- Slide 1: Reflection -->
-      <div class="reflection-slide active">
-        <p class="reflection-label">describe what surfaced.</p>
-        <textarea id="reflectionInput" placeholder="type here..."></textarea>
-      </div>
+<!-- Slide 1 -->
+<div class="reflection-slide active">
+<p class="reflection-label">describe what surfaced.</p>
+<textarea id="reflectionInput"></textarea>
+</div>
 
-      <!-- Slide 2: Vividness -->
+<!-- Slide 2 -->
 <div class="reflection-slide">
 
-  <p class="reflection-label">how vivid was it?</p>
+<p class="reflection-label">how vivid was it?</p>
 
-  <div class="vividness-scale" id="vividnessScale">
-    <div class="vivid-block" data-value="1"></div>
-    <div class="vivid-block" data-value="2"></div>
-    <div class="vivid-block" data-value="3"></div>
-    <div class="vivid-block" data-value="4"></div>
-    <div class="vivid-block" data-value="5"></div>
-  </div>
+<div class="vividness-scale">
+<div class="vivid-block" data-value="1"></div>
+<div class="vivid-block" data-value="2"></div>
+<div class="vivid-block" data-value="3"></div>
+<div class="vivid-block" data-value="4"></div>
+<div class="vivid-block" data-value="5"></div>
+</div>
 
-  <div class="vividness-labels">
-    <span>fragmented</span>
-    <span>vivid</span>
-  </div>
+<div class="vividness-labels">
+<span>fragmented</span>
+<span>vivid</span>
+</div>
 
 </div>
 
-      <!-- Navigation Controls -->
-      <div class="reflection-controls">
-        <button id="backBtn">back</button>
-        <button id="nextBtn">next</button>
-      </div>
+<!-- CONTROLS -->
+<div class="reflection-controls">
+<button id="backBtn">back</button>
+<button id="nextBtn">next</button>
+</div>
 
-    </div>
+</div>
 
-  </div>
+</div>
 
-  <!-- Intro diffusion overlay -->
-  <div class="diffusion-overlay" id="diffusionOverlay"></div>
+<!-- VIDEO LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+<video id="loadingVideo" autoplay muted playsinline>
+<source src="loading-screen.mp4" type="video/mp4">
+</video>
+</div>
 
-  <!-- Confirm pixel blot overlay -->
-  <div class="pixel-overlay" id="pixelOverlay"></div>
-
-  <script src="scent.js"></script>
+<script src="scent.js"></script>
 
 </body>
 </html>

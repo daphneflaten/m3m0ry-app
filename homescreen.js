@@ -1,3 +1,7 @@
+window.addEventListener("load", () => {
+  document.body.classList.add("page-visible");
+});
+
 window.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add("page-visible");
 });
@@ -6,15 +10,21 @@ let currentSlide = 0;
 let isAnimating = false;
 
 function startCalibration() {
-  const landing = document.querySelector(".landing");
-  const onboarding = document.querySelector(".onboarding");
 
-  landing.classList.remove("active");
+  document.body.classList.add("page-exit");
 
   setTimeout(() => {
-    onboarding.classList.add("active");
-  }, 400);
+    document.querySelector(".landing").classList.remove("active");
+    document.querySelector(".onboarding").classList.add("active");
+  }, 700);
+
 }
+const bgVideo = document.querySelector(".bg-video");
+
+if(bgVideo){
+  bgVideo.playbackRate = 0.6;
+}
+document.body.classList.add("page-visible");
 
 function nextSlide() {
   if (isAnimating) return;

@@ -259,6 +259,21 @@ html, body {
     0% 100%
   );
 
-  background: #ddd; /* fallback */
-  color: black;
+  background: black; /* fallback */
+  color: white;
+}
+
+/* Page fade system */
+
+.page-fade {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.page-visible {
+  opacity: 1;
+}
+
+.page-exit {
+  opacity: 0;
 }

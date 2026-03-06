@@ -1,3 +1,6 @@
+window.addEventListener("load", () => {
+  document.body.classList.add("page-visible");
+});
 document.addEventListener("DOMContentLoaded", async () => {
 
   document.body.classList.add("page-visible");
@@ -24,15 +27,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const response = await fetch("data.json");
   const data = await response.json();
-
-  function getContrastYIQ(hexcolor){
-    hexcolor = hexcolor.replace("#","");
-    const r = parseInt(hexcolor.substr(0,2),16);
-    const g = parseInt(hexcolor.substr(2,2),16);
-    const b = parseInt(hexcolor.substr(4,2),16);
-    const yiq = ((r*299)+(g*587)+(b*114))/1000;
-    return (yiq >= 128) ? 'black' : 'white';
-  }
 
   let archive = JSON.parse(localStorage.getItem("m3m0ryArchive"));
 
@@ -68,13 +62,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       tab.classList.add("folder-tab");
       tab.textContent = entry.emotion;
 
-      const emotionColor = data.emotions[entry.emotion]?.color;
-
-      if (emotionColor) {
-        tab.style.background = emotionColor;
-        tab.style.color = getContrastYIQ(emotionColor);
-      }
-
       const randomOffset = Math.floor(Math.random() * 80) - 40;
       tab.style.left = `${60 + randomOffset}px`;
 
@@ -90,11 +77,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         currentEntryIndex = storedArchive.length - 1 - index;
 
         viewerTab.textContent = entry.emotion;
-
-        if (emotionColor) {
-          viewerTab.style.background = emotionColor;
-          viewerTab.style.color = getContrastYIQ(emotionColor);
-        }
 
         viewerBody.innerHTML = `
           <h2>${entry.scentId}</h2>
@@ -204,8 +186,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   /* -------- MAIN MENU -------- */
 
-  homeBtn.addEventListener("click", () => {
-    window.location.href = "index.html";
-  });
+homeBtn.addEventListener("click", () => {
 
+  document.body.classList.add("page-exit");
+
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 800);
+
+});
 });
