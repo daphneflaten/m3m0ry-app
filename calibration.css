@@ -442,3 +442,15 @@ textarea {
   height: 48px;
   object-fit: contain;
 }
+
+video {
+  pointer-events: none;
+}
+
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}
