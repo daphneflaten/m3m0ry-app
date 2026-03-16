@@ -5,6 +5,7 @@ let selectedEmotion
 let selectedVividness
 
 document.querySelector('.bg-video').playbackRate = .4
+document.querySelector('.bg-video').play().catch(()=>{})
 
 const categoryNode = document.getElementById("categoryNode")
 const scentsBranch = document.getElementById("scentsBranch")
