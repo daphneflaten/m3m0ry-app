@@ -3,7 +3,7 @@
 body {
   height: 100vh;
   margin: 0;
-  background: #ffffff;
+  background: #000000;
   font-family: "Reddit Mono", monospace;
   overflow: hidden;
 }
@@ -11,12 +11,9 @@ body {
 /* Logo */
 
 .logo {
-  width: 600px;
-  max-width: 80vw;
-  height: auto;
-  margin-bottom: 40px;
+  width: 200px;
+  margin-bottom: 30px;
 }
-
 /* Buttons */
 
 button {
@@ -30,16 +27,18 @@ button {
 /* Begin Button */
 
 .begin-btn {
-  background: white;
-  color: black;
-  border: 1px solid black;
-  padding: 14px 36px;
+  background: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(255, 255, 255);
+  padding: 20px;
+  font-size: 0.875rem;
   transition: background 0.2s ease, color 0.2s ease;
+  width: 200px;
 }
 
 .begin-btn:hover {
-  background: black;
-  color: white;
+  background: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
 }
 
 /* Screens */
@@ -71,6 +70,8 @@ button {
   opacity: 0;
   transform: translateY(12px);
   transition: opacity 0.6s ease, transform 0.6s ease;
+  color: white;
+  font-size: 1.0rem;
 }
 
 .slide.active-slide {
@@ -83,14 +84,15 @@ button {
 .release-btn {
   margin-top: 40px;
   background: transparent;
-  border: 1px solid black;
-  color: black;
+  border: 1px solid rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
   padding: 14px 36px;
   opacity: 0;
   pointer-events: none;
   transform: translateY(10px);
   transition: opacity 0.6s ease, transform 0.6s ease;
-  background: white;
+  background: rgb(0, 0, 0);
+  font-size: 2.5rem;
 }
 
 .final-slide.active-slide .release-btn {
@@ -101,8 +103,8 @@ button {
 }
 
 .release-btn:hover {
-  background: black;
-  color: white;
+  background: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
 }
 
 /* Fade Out Screen */
@@ -184,21 +186,20 @@ button {
   height: 100%;
   object-fit: cover;
 
-  opacity: .25;
+  opacity: 1;
 
   z-index: -1;
   pointer-events: none;
 }
 
 .bg-video{
-  opacity:0;
-  transition:opacity 1.5s ease;
+  opacity: 0;
+  transition: opacity 1.5s ease;
 }
 
 .page-visible .bg-video{
-  opacity:.15;
+  opacity: .25;
 }
-
 /* PAGE FADE */
 
 .page-fade {
@@ -232,4 +233,19 @@ button {
 
 .page-exit .bg-video {
   opacity: 0;
+}
+
+.screen-filter{
+  position: fixed;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  pointer-events: none; /* allows clicking through */
+  z-index: 1000;
+
+  mix-blend-mode: screen; /* screen filter effect */
+  opacity: .12; /* adjust strength */
 }

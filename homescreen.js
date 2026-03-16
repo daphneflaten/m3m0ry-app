@@ -62,4 +62,12 @@ function releaseScent(event) {
   setTimeout(() => {
     window.location.href = "scent1.html";
   }, 2800);
+  document.addEventListener("DOMContentLoaded", () => {
+  const bgVideo = document.querySelector(".bg-video");
+
+  if (bgVideo) {
+    bgVideo.muted = true;
+    bgVideo.play().catch(() => {});
+  }
+});
 }
