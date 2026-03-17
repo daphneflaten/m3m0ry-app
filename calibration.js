@@ -483,7 +483,7 @@ function saveMemory(){
     emotionNode.innerHTML=`
       <div class="memory-ui">
         <div class="scent-grid">
-          <button id="uploadBtn">upload to calibration archive</button>
+          <button id="uploadBtn">upload to archive</button>
           <button id="forgetBtn">forget the memory</button>
         </div>
       </div>
@@ -532,7 +532,6 @@ function uploadMemory(){
     width: 80%;
     height: 80%;
     object-fit: contain;
-    filter: invert(1);
   `
 
   videoOverlay.appendChild(vid)
@@ -551,7 +550,7 @@ function uploadMemory(){
       videoOverlay.remove()
       showArchivedText()
     },600)
-  }, 9000)
+  }, 4000)
 
 }
 
