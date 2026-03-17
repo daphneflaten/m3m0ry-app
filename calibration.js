@@ -5,7 +5,6 @@ let selectedEmotion
 let selectedVividness
 
 document.querySelector('.bg-video').playbackRate = .4
-document.querySelector('.bg-video').play().catch(()=>{})
 
 const categoryNode = document.getElementById("categoryNode")
 const scentsBranch = document.getElementById("scentsBranch")
@@ -17,7 +16,23 @@ fetch("scents.json")
 .then(res => res.json())
 .then(data=>{
   scentData = data
-  startCalibration()
+
+  const introScreen = document.getElementById("introScreen")
+
+  introScreen.addEventListener("click", ()=>{
+
+    document.querySelector('.bg-video').play().catch(()=>{})
+
+    introScreen.style.transition = "opacity .8s ease"
+    introScreen.style.opacity = "0"
+
+    setTimeout(()=>{
+      introScreen.remove()
+      startCalibration()
+    }, 800)
+
+  })
+
 })
 
 /* ================= CATEGORY SCAN ================= */
@@ -50,6 +65,8 @@ function finalizeCategory(category){
   categoryNode.innerHTML = `<span class="category-name">${category.replace("_"," ")}</span>`
 
   document.getElementById("categoryLabel").innerText = "category detected"
+
+  updateNav([selectedCategory.replace("_"," ")])
 
   const continueBtn = document.createElement("button")
   continueBtn.id = "continueBtn"
@@ -125,6 +142,8 @@ function selectScent(scent){
 
   selectedScent = scent
   scentsBranch.style.opacity = "0"
+
+  updateNav([selectedCategory.replace("_"," "), selectedScent.name])
 
   const categoryText = categoryNode.querySelector(".category-name")
 
@@ -271,6 +290,8 @@ function showEmotionOptions(){
   analysisNode.style.opacity = "0"
   notesNode.style.opacity = "0"
 
+  updateNav([selectedCategory.replace("_"," "), selectedScent.name, "emotion"])
+
   setTimeout(()=>{
 
     analysisNode.innerHTML = ""
@@ -369,6 +390,8 @@ function showMemoryInput(){
   const activeItem = document.querySelector(".picker-item.active")
   if(activeItem) selectedEmotion = activeItem.textContent
 
+  updateNav([selectedCategory.replace("_"," "), selectedScent.name, selectedEmotion])
+
   emotionNode.style.opacity = "0"
 
   setTimeout(()=>{
@@ -400,6 +423,8 @@ function showVividness(){
 
   const continueBtn = document.getElementById("continueBtn")
   if(continueBtn) continueBtn.remove()
+
+  updateNav([selectedCategory.replace("_"," "), selectedScent.name, selectedEmotion, "vividness"])
 
   emotionNode.style.opacity = "0"
 
@@ -459,6 +484,8 @@ function saveMemory(){
 
   const continueBtn = document.getElementById("continueBtn")
   if(continueBtn) continueBtn.remove()
+
+  updateNav([selectedCategory.replace("_"," "), selectedScent.name, selectedEmotion, "archive"])
 
   categoryNode.style.opacity = "0"
   emotionNode.style.opacity = "0"
@@ -791,5 +818,28 @@ function suppressMemory(){
     }
 
   }, interval)
+
+}
+
+/* ================= NAV ================= */
+
+function updateNav(parts){
+
+  const nav = document.getElementById("navBar")
+  const text = parts.join(" > ")
+
+  nav.innerHTML = ""
+
+  let char = 0
+
+  function type(){
+    if(char <= text.length){
+      nav.textContent = text.substring(0, char)
+      char++
+      setTimeout(type, 30)
+    }
+  }
+
+  type()
 
 }
