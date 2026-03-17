@@ -39,34 +39,46 @@ fetch("scents.json")
 
 function startCalibration(){
 
+  const categoryLabel = document.getElementById("categoryLabel")
+
+  categoryLabel.style.transition = "opacity .8s ease"
+  setTimeout(()=>{ categoryLabel.style.opacity = "1" }, 200)
+
+  categoryNode.style.transition = "opacity .8s ease, transform .7s ease"
+  setTimeout(()=>{ categoryNode.style.opacity = "1" }, 500)
+
   const categories = Object.keys(scentData)
   let cycles = 0
   let randomCategory
 
-  const scan = setInterval(()=>{
+  setTimeout(()=>{
 
-    randomCategory = categories[Math.floor(Math.random()*categories.length)]
-    categoryNode.innerHTML = `<span class="category-name">${randomCategory.replace("_"," ")}</span>`
+    const scan = setInterval(()=>{
 
-    cycles++
+      randomCategory = categories[Math.floor(Math.random()*categories.length)]
+      categoryNode.innerHTML = `<span class="category-name">${randomCategory}</span>`
 
-    if(cycles > 14){
-      clearInterval(scan)
-      finalizeCategory(randomCategory)
-    }
+      cycles++
 
-  },120)
+      if(cycles > 14){
+        clearInterval(scan)
+        finalizeCategory(randomCategory)
+      }
+
+    },120)
+
+  }, 600)
 
 }
 
 function finalizeCategory(category){
 
   selectedCategory = category
-  categoryNode.innerHTML = `<span class="category-name">${category.replace("_"," ")}</span>`
+  categoryNode.innerHTML = `<span class="category-name">${category}</span>`
 
   document.getElementById("categoryLabel").innerText = "category detected"
 
-  updateNav([selectedCategory.replace("_"," ")])
+  updateNav("category", ()=> location.reload())
 
   const continueBtn = document.createElement("button")
   continueBtn.id = "continueBtn"
@@ -99,6 +111,14 @@ function continueCalibration(){
 }
 
 function showBranches(){
+
+  updateNav("scent", ()=>{
+    emotionNode.style.opacity = "0"
+    notesNode.style.opacity = "0"
+    analysisNode.style.opacity = "0"
+    categoryNode.classList.add("active")
+    setTimeout(()=> showBranches(), 400)
+  })
 
   const scents = scentData[selectedCategory]
 
@@ -142,8 +162,6 @@ function selectScent(scent){
 
   selectedScent = scent
   scentsBranch.style.opacity = "0"
-
-  updateNav([selectedCategory.replace("_"," "), selectedScent.name])
 
   const categoryText = categoryNode.querySelector(".category-name")
 
@@ -287,10 +305,10 @@ function showEmotionOptions(){
   const continueBtn = document.getElementById("continueBtn")
   if(continueBtn) continueBtn.remove()
 
+  updateNav("emotion", ()=> showEmotionOptions())
+
   analysisNode.style.opacity = "0"
   notesNode.style.opacity = "0"
-
-  updateNav([selectedCategory.replace("_"," "), selectedScent.name, "emotion"])
 
   setTimeout(()=>{
 
@@ -390,7 +408,7 @@ function showMemoryInput(){
   const activeItem = document.querySelector(".picker-item.active")
   if(activeItem) selectedEmotion = activeItem.textContent
 
-  updateNav([selectedCategory.replace("_"," "), selectedScent.name, selectedEmotion])
+  updateNav("log", ()=> showMemoryInput())
 
   emotionNode.style.opacity = "0"
 
@@ -400,39 +418,6 @@ function showMemoryInput(){
       <div class="memory-ui">
         <p class="memory-label">describe the memory that surfaced</p>
         <textarea id="memoryInput" placeholder="write here..."></textarea>
-      </div>
-    `
-
-    emotionNode.style.display = "flex"
-    emotionNode.style.opacity = "1"
-
-    const continueBtn = document.createElement("button")
-    continueBtn.id = "continueBtn"
-    continueBtn.innerHTML = `<img src="arrow.png" alt="continue">`
-    document.body.appendChild(continueBtn)
-    setTimeout(()=> continueBtn.classList.add("show"), 150)
-    continueBtn.onclick = showVividness
-
-  },400)
-
-}
-
-/* ================= VIVIDNESS ================= */
-
-function showVividness(){
-
-  const continueBtn = document.getElementById("continueBtn")
-  if(continueBtn) continueBtn.remove()
-
-  updateNav([selectedCategory.replace("_"," "), selectedScent.name, selectedEmotion, "vividness"])
-
-  emotionNode.style.opacity = "0"
-
-  setTimeout(()=>{
-
-    emotionNode.innerHTML=`
-      <div class="memory-ui">
-        <p class="memory-label">how vivid was this memory?</p>
         <div class="vividness-scale">
           <div class="vivid-block" data-value="1"></div>
           <div class="vivid-block" data-value="2"></div>
@@ -474,6 +459,13 @@ function showVividness(){
       })
     })
 
+    const continueBtn = document.createElement("button")
+    continueBtn.id = "continueBtn"
+    continueBtn.innerHTML = `<img src="arrow.png" alt="continue">`
+    document.body.appendChild(continueBtn)
+    setTimeout(()=> continueBtn.classList.add("show"), 150)
+    continueBtn.onclick = saveMemory
+
   },400)
 
 }
@@ -485,7 +477,7 @@ function saveMemory(){
   const continueBtn = document.getElementById("continueBtn")
   if(continueBtn) continueBtn.remove()
 
-  updateNav([selectedCategory.replace("_"," "), selectedScent.name, selectedEmotion, "archive"])
+  updateNav("complete", null)
 
   categoryNode.style.opacity = "0"
   emotionNode.style.opacity = "0"
@@ -514,6 +506,9 @@ function saveMemory(){
 /* ================= UPLOAD ================= */
 
 function uploadMemory(){
+  const nav = document.getElementById("navBar")
+  nav.style.transition = "opacity .8s ease"
+  nav.style.opacity = "0"
 
   emotionNode.style.opacity = "0"
 
@@ -632,7 +627,8 @@ function showArchivedText(){
 /* ================= FORGET ================= */
 
 function forgetMemory(){
-
+  const nav = document.getElementById("navBar")
+  nav.style.transition = "opacity .8s ease"
   emotionNode.style.opacity = "0"
 
   setTimeout(()=>{
@@ -823,20 +819,39 @@ function suppressMemory(){
 
 /* ================= NAV ================= */
 
-function updateNav(parts){
+const navHistory = []
+
+function updateNav(label, onclick){
 
   const nav = document.getElementById("navBar")
-  const text = parts.join(" > ")
 
-  nav.innerHTML = ""
+  navHistory.push({ label, onclick })
+
+  nav.innerHTML = navHistory.slice(0, -1).map((seg, i) => `
+    <span class="nav-segment" data-index="${i}">${seg.label}</span>
+    <span class="nav-divider"> > </span>
+  `).join('')
+
+  const newSegment = document.createElement("span")
+  newSegment.className = "nav-segment current"
+  nav.appendChild(newSegment)
+
+  nav.style.opacity = "1"
 
   let char = 0
 
   function type(){
-    if(char <= text.length){
-      nav.textContent = text.substring(0, char)
+    if(char <= label.length){
+      newSegment.textContent = label.substring(0, char)
       char++
-      setTimeout(type, 30)
+      setTimeout(type, 40)
+    } else {
+      nav.querySelectorAll(".nav-segment[data-index]").forEach(el => {
+        const i = parseInt(el.dataset.index)
+        if(navHistory[i].onclick){
+          el.onclick = ()=> navHistory[i].onclick()
+        }
+      })
     }
   }
 
