@@ -78,7 +78,7 @@ function finalizeCategory(category){
 
   document.getElementById("categoryLabel").innerText = "category detected"
 
-  updateNav("category", ()=> location.reload())
+  updateNav("category")
 
   const continueBtn = document.createElement("button")
   continueBtn.id = "continueBtn"
@@ -112,13 +112,7 @@ function continueCalibration(){
 
 function showBranches(){
 
-  updateNav("scent", ()=>{
-    emotionNode.style.opacity = "0"
-    notesNode.style.opacity = "0"
-    analysisNode.style.opacity = "0"
-    categoryNode.classList.add("active")
-    setTimeout(()=> showBranches(), 400)
-  })
+  updateNav("scent")
 
   const scents = scentData[selectedCategory]
 
@@ -237,6 +231,8 @@ function startScentAnalysis(){
 
 function generateNotes(){
 
+  updateNav("notes")
+
   analysisNode.innerHTML = ""
 
   notesNode.innerHTML = ""
@@ -305,7 +301,7 @@ function showEmotionOptions(){
   const continueBtn = document.getElementById("continueBtn")
   if(continueBtn) continueBtn.remove()
 
-  updateNav("emotion", ()=> showEmotionOptions())
+  updateNav("emotion")
 
   analysisNode.style.opacity = "0"
   notesNode.style.opacity = "0"
@@ -317,7 +313,7 @@ function showEmotionOptions(){
 
     emotionNode.innerHTML=`
       <div class="emotion-ui">
-        <p class="emotion-label">select the emotion you feel</p>
+        <p class="emotion-label">select the emotion that scent triggers</p>
         <div class="picker-container">
           <div class="picker" id="picker"></div>
         </div>
@@ -408,7 +404,7 @@ function showMemoryInput(){
   const activeItem = document.querySelector(".picker-item.active")
   if(activeItem) selectedEmotion = activeItem.textContent
 
-  updateNav("log", ()=> showMemoryInput())
+  updateNav("log")
 
   emotionNode.style.opacity = "0"
 
@@ -416,8 +412,8 @@ function showMemoryInput(){
 
     emotionNode.innerHTML=`
       <div class="memory-ui">
-        <p class="memory-label">describe the memory that surfaced</p>
-        <textarea id="memoryInput" placeholder="write here..."></textarea>
+        <p class="memory-label">log your memory</p>
+        <textarea id="memoryInput" placeholder="describe here..."></textarea>
         <div class="vividness-scale">
           <div class="vivid-block" data-value="1"></div>
           <div class="vivid-block" data-value="2"></div>
@@ -477,7 +473,7 @@ function saveMemory(){
   const continueBtn = document.getElementById("continueBtn")
   if(continueBtn) continueBtn.remove()
 
-  updateNav("complete", null)
+  updateNav("complete")
 
   categoryNode.style.opacity = "0"
   emotionNode.style.opacity = "0"
@@ -506,6 +502,7 @@ function saveMemory(){
 /* ================= UPLOAD ================= */
 
 function uploadMemory(){
+
   const nav = document.getElementById("navBar")
   nav.style.transition = "opacity .8s ease"
   nav.style.opacity = "0"
@@ -612,11 +609,7 @@ function showArchivedText(){
         })
       })
 
-      document.getElementById("againBtn").onclick = ()=>{
-        emotionNode.style.transition = "opacity .8s ease"
-        emotionNode.style.opacity = "0"
-        setTimeout(()=> location.reload(), 800)
-      }
+      document.getElementById("againBtn").onclick = ()=> window.location.href = "https://daphneflaten.github.io/m3m0ry-app/calibration.html"
 
     },600)
 
@@ -627,8 +620,11 @@ function showArchivedText(){
 /* ================= FORGET ================= */
 
 function forgetMemory(){
+
   const nav = document.getElementById("navBar")
   nav.style.transition = "opacity .8s ease"
+  nav.style.opacity = "0"
+
   emotionNode.style.opacity = "0"
 
   setTimeout(()=>{
@@ -797,12 +793,8 @@ function suppressMemory(){
             })
 
             document.getElementById("againBtn").onclick = ()=>{
-              emotionNode.style.transition = "opacity .8s ease"
-              emotionNode.style.opacity = "0"
-              setTimeout(()=>{
-                whiteBg.remove()
-                location.reload()
-              }, 800)
+              whiteBg.remove()
+              window.location.href = "https://daphneflaten.github.io/m3m0ry-app/calibration.html"
             }
 
           },600)
@@ -819,42 +811,64 @@ function suppressMemory(){
 
 /* ================= NAV ================= */
 
-const navHistory = []
+const navSteps = [
+  { label: "category", onclick: ()=> location.reload() },
+  { label: "scent",    onclick: ()=>{ emotionNode.style.opacity="0"; notesNode.style.opacity="0"; analysisNode.style.opacity="0"; categoryNode.classList.add("active"); setTimeout(()=> showBranches(), 400) } },
+  { label: "notes",    onclick: ()=> showEmotionContinue() },
+  { label: "emotion",  onclick: ()=> showEmotionOptions() },
+  { label: "log",      onclick: ()=> showMemoryInput() },
+  { label: "complete", onclick: null }
+]
 
-function updateNav(label, onclick){
+let currentNavStep = -1
+
+function updateNav(stepLabel){
 
   const nav = document.getElementById("navBar")
+  const stepIndex = navSteps.findIndex(s => s.label === stepLabel)
+  if(stepIndex === -1) return
 
-  navHistory.push({ label, onclick })
+  currentNavStep = stepIndex
 
-  nav.innerHTML = navHistory.slice(0, -1).map((seg, i) => `
-    <span class="nav-segment" data-index="${i}">${seg.label}</span>
-    <span class="nav-divider"> > </span>
-  `).join('')
-
-  const newSegment = document.createElement("span")
-  newSegment.className = "nav-segment current"
-  nav.appendChild(newSegment)
-
+  nav.innerHTML = ""
   nav.style.opacity = "1"
 
-  let char = 0
+  navSteps.slice(0, stepIndex + 1).forEach((step, i) => {
 
-  function type(){
-    if(char <= label.length){
-      newSegment.textContent = label.substring(0, char)
-      char++
-      setTimeout(type, 40)
-    } else {
-      nav.querySelectorAll(".nav-segment[data-index]").forEach(el => {
-        const i = parseInt(el.dataset.index)
-        if(navHistory[i].onclick){
-          el.onclick = ()=> navHistory[i].onclick()
-        }
-      })
+    if(i > 0){
+      const divider = document.createElement("span")
+      divider.className = "nav-divider"
+      divider.textContent = " > "
+      nav.appendChild(divider)
     }
-  }
 
-  type()
+    const seg = document.createElement("span")
+    seg.className = i === stepIndex ? "nav-segment current" : "nav-segment"
+    seg.dataset.index = i
+
+    if(i < stepIndex && step.onclick){
+      seg.onclick = ()=>{
+        currentNavStep = i
+        step.onclick()
+      }
+    }
+
+    nav.appendChild(seg)
+
+    if(i === stepIndex){
+      let char = 0
+      function type(){
+        if(char <= step.label.length){
+          seg.textContent = step.label.substring(0, char)
+          char++
+          setTimeout(type, 40)
+        }
+      }
+      type()
+    } else {
+      seg.textContent = step.label
+    }
+
+  })
 
 }

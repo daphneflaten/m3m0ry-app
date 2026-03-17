@@ -69,8 +69,10 @@ body {
 .category-name {
   font-size: var(--t2-size);
   font-weight: var(--t2-weight);
-  color: #1a60eb;
+  color: #ffffff;
   line-height: .9;
+    text-transform: uppercase;
+
 }
 
 .category-box {
@@ -145,7 +147,7 @@ button:hover {
 
 #continueBtn, #confirmEmotion {
   position: fixed;
-  bottom: 60px;
+  bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
   width: auto;
@@ -172,7 +174,7 @@ button:hover {
 /* ===== NODES ===== */
 .node {
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
@@ -235,6 +237,7 @@ button:hover {
   align-items: center;
   gap: 16px;
   text-align: center;
+  margin-top: 50px;
 }
 
 .selected-scent {
@@ -243,6 +246,7 @@ button:hover {
   background: white;
   color: black;
   padding: 4px 10px;
+  
 }
 
 .emotion-label {
@@ -315,7 +319,7 @@ button:hover {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -45%);
   width: 80%;
   max-width: 320px;
   display: flex;
@@ -464,22 +468,22 @@ video::-webkit-media-controls-start-playback-button {
   position: fixed;
   inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 20px;
   background: black;
-  z-index: 1000;
+  z-index: 800;
   cursor: pointer;
+  padding-bottom: 80px;
 }
 
 .intro-text {
-  font-size: var(--tb-size);
-  color: white;
+  width: 400px;
+  height: auto;
   opacity: 0;
-  animation: fadeIn 1.2s forwards .4s;
-  font-weight: 600;
-  text-transform: uppercase;
-    margin-bottom: 15px;
-
+  animation: fadeIn 1.2s forwards .6s;
+  margin: 0;
 }
 
 .intro-screen {
@@ -531,7 +535,6 @@ video::-webkit-media-controls-start-playback-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
   padding: 8px 16px;
   z-index: 500;
   opacity: 0;
@@ -542,10 +545,9 @@ video::-webkit-media-controls-start-playback-button {
   cursor: pointer;
   opacity: .4;
   transition: opacity .2s;
-  font-size: 1rem;
+  font-size: .9rem;
   text-transform: uppercase;
-  color: rgb(0, 0, 0);
-  font-weight: 400;
+  color: white;
 }
 
 .nav-segment:hover {
@@ -560,5 +562,5 @@ video::-webkit-media-controls-start-playback-button {
 .nav-divider {
   opacity: .3;
   font-size: .6rem;
-  color: black;
+  color: white;
 }
